@@ -39,9 +39,9 @@ contract('DStorage', ([deployer, uploader]) => {
       fileCount = await dstorage.fileCount()
     })
 
-    //check event
+    
     it('upload file', async () => {
-      // SUCESS
+      
       assert.equal(fileCount, 1)
       const event = result.logs[0].args
       assert.equal(event.fileId.toNumber(), fileCount.toNumber(), 'Id is correct')
@@ -52,23 +52,23 @@ contract('DStorage', ([deployer, uploader]) => {
       assert.equal(event.fileDescription, fileDescription, 'Description is correct')
       assert.equal(event.uploader, uploader, 'Uploader is correct')
 
-      // FAILURE: File must have hash
+      
       await dstorage.uploadFile('', fileSize, fileType, fileName, fileDescription, { from: uploader }).should.be.rejected;
 
-      // FAILURE: File must have size
+     
       await dstorage.uploadFile(fileHash, '', fileType, fileName, fileDescription, { from: uploader }).should.be.rejected;
       
-      // FAILURE: File must have type
+     
       await dstorage.uploadFile(fileHash, fileSize, '', fileName, fileDescription, { from: uploader }).should.be.rejected;
 
-      // FAILURE: File must have name
+      
       await dstorage.uploadFile(fileHash, fileSize, fileType, '', fileDescription, { from: uploader }).should.be.rejected;
 
-      // FAILURE: File must have description
+      
       await dstorage.uploadFile(fileHash, fileSize, fileType, fileName, '', { from: uploader }).should.be.rejected;
     })
 
-    //check from Struct
+   
     it('lists file', async () => {
       const file = await dstorage.files(fileCount)
       assert.equal(file.fileId.toNumber(), fileCount.toNumber(), 'id is correct')
